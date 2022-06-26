@@ -11,23 +11,25 @@ import hexchat
 
 
 __module_name__ = "void-repos"
-__module_version__ = "1.1.0"
+__module_version__ = "1.1.0a"
 __module_description__ = "Plugin for Voidlinux's git repositories"
 debug = False
 
 
 def handle_robot(word: list[str], word_eol: list[str], userdata):
-    if hexchat.get_info("server").endswith(".libera.chat"):
-        if hexchat.get_info("channel") == "#xbps":
-            if word[0] == "void-robot":
-                event, title, url = parse_robot(word[2])
-                hexchat.prnt(f"\00311Void\00310Robot\t\x0f{event}")
-                if title:
-                    hexchat.prnt(f"\00310{title}")
-                if url:
-                    hexchat.prnt(f"\00314{url}")
-                return hexchat.EAT_HEXCHAT
-    return hexchat.EAT_NONE
+    if word[0] == "void-robot":
+        event, title, url = parse_robot(word[2])
+    elif word[1] == "void-robot":
+        event, title, url = parse_robot(word[0])
+    else:
+        return hexchat.EAT_NONE
+
+    hexchat.prnt(f"\00311Void\00310Robot\t\x0f{event}")
+    if title:
+        hexchat.prnt(f"\00310{title}")
+    if url:
+        hexchat.prnt(f"\00314{url}")
+    return hexchat.EAT_HEXCHAT
 
 
 if debug:
@@ -43,6 +45,7 @@ if debug:
 
 
 hexchat.hook_print("Channel Notice", handle_robot, priority=hexchat.PRI_HIGH)
+hexchat.hook_print("Server Notice", handle_robot, priority=hexchat.PRI_HIGH)
 
 hexchat.prnt("\00311Void\00310Repos\tPlugin loaded!")
 
