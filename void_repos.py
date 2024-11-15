@@ -60,7 +60,7 @@ def handle_void(source: str, msg: str):
     if line3:
         hexchat.prnt(f"\00314{line3}")
     if not quiet:
-        hexchat.command("GUI COLOR 2")
+        hexchat.command("GUI COLOR 2 -NOOVERRIDE")
     return hexchat.EAT_HEXCHAT
 
 
